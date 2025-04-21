@@ -6,6 +6,9 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "storybook": "turbo run storybook --filter=@ui/library",
+    "test": "turbo run test --filter=@ui/library",
+    "build-storybook": "turbo run build-storybook --filter=@ui/library",
     "check-types": "turbo run check-types",
     "view-report": "turbo run view-report"
   },
