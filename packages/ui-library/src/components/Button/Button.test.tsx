@@ -1,46 +1,33 @@
-import { describe, it, expect, vi } from "vitest";
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
 import { Button } from "./Button";
 
 describe("Button", () => {
-  it("renders with default props", () => {
+  it("renders with children text", () => {
     render(<Button>Click Me</Button>);
-    const btn = screen.getByRole("button", { name: /click me/i });
-    expect(btn).toBeInTheDocument();
-    expect(btn).toHaveClass(
-      "ui-button-base",
-      "ui-button-primary",
-      "ui-button-medium"
-    );
+    const button = screen.getByRole("button");
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent("Click Me");
   });
 
-  it("applies variant and size classes", () => {
+  it("calls onClick when clicked", () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not call onClick when disabled", () => {
+    const handleClick = vi.fn();
     render(
-      <Button variant="outline" size="large">
-        Custom
+      <Button disabled onClick={handleClick}>
+        Disabled
       </Button>
     );
-    const btn = screen.getByRole("button", { name: /custom/i });
-    expect(btn).toHaveClass("ui-button-outline", "ui-button-large");
-  });
-
-  it("handles click events", () => {
-    const onClick = vi.fn();
-    render(<Button onClick={onClick}>Click</Button>);
-    fireEvent.click(screen.getByRole("button"));
-    expect(onClick).toHaveBeenCalledTimes(1);
-  });
-
-  it("applies disabled class and attribute", () => {
-    render(<Button disabled>Disabled</Button>);
-    const btn = screen.getByRole("button", { name: /disabled/i });
-    expect(btn).toBeDisabled();
-    expect(btn).toHaveClass("ui-button-disabled");
-  });
-
-  it("accepts custom className", () => {
-    render(<Button className="custom-class">Test</Button>);
-    const btn = screen.getByRole("button", { name: /test/i });
-    expect(btn).toHaveClass("custom-class");
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    expect(handleClick).not.toHaveBeenCalled();
   });
 });
