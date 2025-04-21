@@ -25,7 +25,7 @@ export default function Home() {
         </Link>
 
         <Link
-          href="https://github.com/BraveNima/tenet"
+          href="https://github.com/BraveNima/ui-libary"
           target="_blank"
           rel="noopener noreferrer"
         >
